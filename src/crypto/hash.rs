@@ -6,7 +6,7 @@
 //! 
 //! `libnmtp::crypto::hash` can be used to hash data.
 //!
-//! the checksum function uses CRC32 and the hash function uses BLAKE2b
+//! the checksum function uses the hash function BLAKE2b
 
 extern crate orion;
 
@@ -29,13 +29,15 @@ pub fn new_checksum(data: &[u8]) -> Result<Checksum, HashErr> {
     Ok([bytes[0], bytes[1], bytes[2], bytes[3]])
 }
 
+/// Creates a new BLAKE2b, 256bit hash
+/// No need for streaming api because everything in NMTP is small enough to fit
+/// inside one buffer
+/// Intended use for NMTP is general purpose hashing
 pub fn new_digest(data: &[u8]) -> Result<hash::Digest, HashErr> {
     let hash = hash::digest(data)?;
 
     Ok(hash)
 }
-
-
 
 /// Testing 
 #[cfg(test)]
